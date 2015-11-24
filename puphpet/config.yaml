@@ -10,14 +10,20 @@ vagrantfile:
         network:
             private_network: 192.168.56.101
             forwarded_port:
-                vflnp_3c7t2ctvr3dv:
+                vflnp_kxcswkqyg702:
                     host: '9875'
                     guest: '22'
+                vflnp_kxcswkqyg703:
+                    host: '8000'
+                    guest: '80'
+                vflnp_kxcswkqyg704:
+                    host: '33060'
+                    guest: '3306'
         post_up_message: ''
         provider:
             virtualbox:
                 modifyvm:
-                    natdnshostresolver1: 'on'
+                    natdnshostresolver1: on
                 showgui: '0'
             vmware:
                 numvcpus: 1
@@ -70,19 +76,14 @@ vagrantfile:
 server:
     install: '1'
     packages:
-        - htop
+        - git
+        - memcached
         - vim
+        - htop
 users_groups:
     install: '1'
     groups: {  }
     users: {  }
-locale:
-    install: '1'
-    settings:
-        default_locale: en_US.UTF-8
-        locales:
-            - en_GB.UTF-8
-            - en_US.UTF-8
 firewall:
     install: '1'
     rules: {  }
@@ -119,8 +120,7 @@ nginx:
             locations:
                 nxvl_9ipkezi7qbsu:
                     location: /
-                    autoindex: 'off'
-                    internal: 'false'
+                    autoindex: off
                     try_files:
                         - $uri
                         - $uri/
@@ -130,8 +130,7 @@ nginx:
                     fastcgi_split_path: ''
                 nxvl_6hqg7cppzv2x:
                     location: '~ \.php$'
-                    autoindex: 'off'
-                    internal: 'false'
+                    autoindex: off
                     try_files:
                         - $uri
                         - $uri/
@@ -155,8 +154,6 @@ apache:
     modules:
         - proxy_fcgi
         - rewrite
-        - headers
-        - vhost_alias
     vhosts:
         av_gnsj9u0uunsz:
             servername: test.dev
@@ -187,7 +184,7 @@ apache:
                         - 'all granted'
                     custom_fragment: ''
                     files_match:
-                        avdfm_aboht5ihblxw:
+                        avdfm_amvco6ol8bqq:
                             path: \.php$
                             sethandler: 'proxy:fcgi://127.0.0.1:9000'
                             custom_fragment: ''
@@ -202,19 +199,11 @@ php:
             - cli
             - intl
             - mcrypt
-            - bcmath
-            - curl
-            - gd
-            - mbstring
-            - xmlrpc
-            - readline
-            - mysqlnd
-            - memcached
-            - common
         pear: {  }
-        pecl: {  }
+        pecl:
+            - memcached
     ini:
-        display_errors: 'On'
+        display_errors: On
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
         date.timezone: Asia/Ho_Chi_Minh
@@ -285,51 +274,19 @@ hhvm:
         hhvm.log.use_log_file: '1'
         hhvm.log.file: /var/log/hhvm/error.log
     php_ini:
-        display_errors: 'On'
+        display_errors: On
         error_reporting: '-1'
         date.timezone: UTC
 mysql:
     install: '1'
     settings:
-        version: '5.6'
+        version: '5.5'
         root_password: passwd
         override_options: {  }
     adminer: '1'
-    users:
-        mysqlnu_f9czyud7e120:
-            name: dbuser
-            password: passwd
-    databases:
-        mysqlnd_szw06y14tn8i:
-            name: testdb
-            sql: ''
-    grants:
-        mysqlng_m6fn2i8ic077:
-            user: dbuser
-            table: '*.*'
-            privileges:
-                - ALL
-mariadb:
-    install: '0'
-    settings:
-        version: '10.0'
-        root_password: '123'
-        override_options: {  }
-    adminer: 0
-    users:
-        mariadbnu_1cba8oqu3ayk:
-            name: dbuser
-            password: '123'
-    databases:
-        mariadbnd_7sk0uqpboy4k:
-            name: dbname
-            sql: ''
-    grants:
-        mariadbng_apnzc10wtysa:
-            user: dbuser
-            table: '*.*'
-            privileges:
-                - ALL
+    users: {  }
+    databases: {  }
+    grants: {  }
 postgresql:
     install: '0'
     settings:
@@ -354,11 +311,11 @@ redis:
     settings:
         conf_port: '6379'
 sqlite:
-    install: '0'
+    install: '1'
     adminer: 0
     databases: {  }
 mailcatcher:
-    install: '0'
+    install: '1'
     settings:
         smtp_ip: 0.0.0.0
         smtp_port: 1025
@@ -370,7 +327,7 @@ beanstalkd:
     install: '0'
     settings:
         listenaddress: 0.0.0.0
-        listenport: '11300'
+        listenport: '13000'
         maxjobsize: '65535'
         maxconnections: '1024'
         binlogdir: /var/lib/beanstalkd/binlog
