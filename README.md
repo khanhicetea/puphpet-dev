@@ -7,6 +7,7 @@
 ## Virtual Hosts
 
 > Folder `www` is mapping with `/var/www` of Linux virtual machine.
+
 1. Configure virtualhosts in file `www/vhosts.conf` (can follow Sifoni example)
 2. Point virtual domain in `hosts` file to `192.168.56.101`
 
